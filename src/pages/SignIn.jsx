@@ -11,15 +11,16 @@ function SignIn() {
   } = useForm();
 
   // フォームが送信されたときの処理
+  //　未完成
   const onSubmit = (data) => {
     console.log(data);
   };
 
   return (
-    <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
       
-      {/* Navigation bar */}
-      <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%' }}>
+      {/* Navigation bar 　上部のマージンを縮小　*/}
+      <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%', marginTop: 0 }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={1} textColor="inherit" indicatorColor="primary">
             <Tab label="Home" sx={{ color: '#fff' }} />
@@ -30,7 +31,7 @@ function SignIn() {
       </AppBar>
 
       {/* Form Container */}
-      <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 4 }}>
+      <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 30 }}>
         <Typography component="h1" variant="h5" sx={{ color: '#fff', textAlign: 'center', mb: 2 }}>
           Sign In
         </Typography>
@@ -84,15 +85,17 @@ function SignIn() {
         </form>
       </Container>
 
-      {/* Sign Up Link */}
+      {/* Sign Up Link 　未完成　*/}
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ color: '#fff' }}>
           Don't have an account?{' '}
-          <Link href="#" variant="body2" sx={{ color: '#7F00FF' }}>
+          <Link href="/signup" variant="body2" sx={{ color: '#7F00FF' }}>
             Sign Up
           </Link>
         </Typography>
       </Box>
+
+      
     </Box>
   );
 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axiosインスタンスを作成し、ベースURLを設定
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3004', // APIのベースURL
+  baseURL: 'http://localhost:3005', // APIのベースURL
   headers: {
     'Content-Type': 'application/json'
   }
