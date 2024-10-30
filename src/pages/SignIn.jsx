@@ -1,6 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Link } from '@mui/material';
+import { signin } from '../api/user';
+import { useNavigate } from 'react-router-dom';
+
 
 function SignIn() {
   // useFormを使ってフォームの管理をセットアップ
@@ -9,12 +12,38 @@ function SignIn() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   // フォームが送信されたときの処理
-  //　未完成
-  const onSubmit = (data) => {
-    console.log(data);
+  // const onSubmit = async (data) => {
+  //   try {
+  //     const res = await signin(data); // サインインリクエストが成功した場合に処理を続行
+  //     alert("ログイン完了");
+  //     navigate('/user'); // '/user' ページにナビゲート
+  //   } catch (error) {
+  //     alert("ログインに失敗しました");
+  //   }
+  // };
+
+    // フォームが送信されたときの処理
+  const onSubmit = async (data) => {
+    try {
+      const res = await signin(data); // サインインリクエストが成功した場合に処理を続行
+
+      if (res.token) {
+        alert("ログイン完了");
+        navigate('/user'); // '/user' ページにナビゲート
+      } else {
+       // 認証に失敗した場合の処理   alert("ログインに失敗しました: " + (res.error || "不明なエラー"));
+        alert("ログインに失敗しました");
+
+        navigate('/signin'); // ログインページにリダイレクト
+      }
+    } catch (error) {
+      alert("エラーが発生しました。もう一度お試しください。");
+    }
   };
+
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>

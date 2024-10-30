@@ -1,7 +1,9 @@
-import React from 'react';
+// import React from 'react';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, Card, CardContent, Typography, Avatar, Grid, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import React, { useEffect, useState } from 'react';
+
 
 function UserPage() {
   // サンプルデータ
@@ -15,6 +17,17 @@ function UserPage() {
     { title: 'Title', date: 'Updated today' },
     { title: 'Title', date: 'Updated 2 days ago' },
   ];
+
+  // ユーザー情報の状態管理
+  const [user, setUser] = useState({ name: '', email: '' });
+
+  useEffect(() => {
+    // localStorageからユーザー情報を取得
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // JSONからオブジェクトに変換して保存
+    }
+  }, []);
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
@@ -30,13 +43,13 @@ function UserPage() {
       </AppBar>
 
       <Container sx={{ display: 'flex', mt: 4 }}>
-        {/* 左側のサイドバー 　LoginUser表示　未完成*/}
+        {/* 左側のサイドバー */}
         <Box sx={{ width: '250px', bgcolor: '#1c1c1c', borderRadius: '8px', p: 3 }}>
           <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
-            John Doue
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: '#aaa', mb: 3 }}>
-            jdoe@acme.com
+            {user.email}
           </Typography>
 
           <Divider sx={{ bgcolor: '#444' }} />
@@ -56,6 +69,13 @@ function UserPage() {
             </ListItem>
           </List>
         </Box>
+
+        {/* logout時のトークン削除 */}
+        {/* const logout = () => {
+          localStorage.removeItem('token');
+          navigate('/login');
+        }; */}
+        
 
         {/* 右側の投稿リスト */}
         <Grid container spacing={3} sx={{ ml: 4 }}>
