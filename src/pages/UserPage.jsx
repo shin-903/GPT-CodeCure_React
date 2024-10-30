@@ -30,7 +30,7 @@ function UserPage() {
       </AppBar>
 
       <Container sx={{ display: 'flex', mt: 4 }}>
-        {/* 左側のサイドバー */}
+        {/* 左側のサイドバー 　LoginUser表示　未完成*/}
         <Box sx={{ width: '250px', bgcolor: '#1c1c1c', borderRadius: '8px', p: 3 }}>
           <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
             John Doue
@@ -41,7 +41,7 @@ function UserPage() {
 
           <Divider sx={{ bgcolor: '#444' }} />
 
-          <List>
+          <List> {/* Settingリンク　logout機能　未完成 */}
             <ListItem button>
               <ListItemIcon>
                 <SettingsIcon sx={{ color: '#fff' }} />
@@ -61,13 +61,13 @@ function UserPage() {
         <Grid container spacing={3} sx={{ ml: 4 }}>
           {posts.map((post, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#F5EBF7', p: 2 }}>
-                <Avatar sx={{ bgcolor: '#7F00FF', mr: 2 }}>A</Avatar>
+              <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1c1c1c', p: 2 }}> {/* カードの色を変更 */}
+                {/* <Avatar sx={{ bgcolor: '#7F00FF', mr: 2 }}>A</Avatar> 　アバター表示　*/}
                 <CardContent>
-                  <Typography variant="h6" component="div">
+                  <Typography variant="h6" component="div" sx={{ color: '#fff' }}> {/* 投稿内容の文字色を変更 */}
                     {post.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="#aaa"> {/* 投稿日時の文字色を変更 */}
                     {post.date}
                   </Typography>
                 </CardContent>

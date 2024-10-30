@@ -21,11 +21,11 @@ function SignUp() {
     navigate('/signin');
 
   };
-
+  // , justifyContent: 'center', alignItems: 'center'
   return (
-    <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
       
-      {/* Navigation bar */}
+      {/* Navigation bar 上部のマージンを縮小*/}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={2} textColor="inherit" indicatorColor="primary">
@@ -37,7 +37,7 @@ function SignUp() {
       </AppBar>
 
       {/* Form Container */}
-      <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 4 }}>
+      <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 20 }}>
         <Typography component="h1" variant="h5" sx={{ color: '#fff', textAlign: 'center', mb: 2 }}>
           Sign Up
         </Typography>
@@ -123,11 +123,11 @@ function SignUp() {
         </form>
       </Container>
 
-      {/* Sign In Link */}
+      {/* Sign In Link  未完成　*/}
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ color: '#fff' }}>
           Have an account?{' '}
-          <Link href="#" variant="body2" sx={{ color: '#7F00FF' }}>
+          <Link href="/signin" variant="body2" sx={{ color: '#7F00FF' }}>
             Sign In
           </Link>
         </Typography>

@@ -6,12 +6,12 @@ function UserSettingsPage() {
   // react-hook-form の設定
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-  // フォームの送信処理
+  // フォームの送信処理　未完成
   const onSubmit = (data) => {
     console.log('Form submitted:', data);
   };
 
-  // アカウント削除処理
+  // アカウント削除処理  未完成
   const handleDelete = () => {
     console.log('Account deletion triggered');
   };
@@ -31,7 +31,9 @@ function UserSettingsPage() {
 
       <Container sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
         {/* 左側のユーザー編集フォーム */}
-        <Card sx={{ width: '500px', p: 3, border: '2px solid #7F00FF', borderRadius: '10px' }}>
+        <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 20 }}>
+
+        {/* <Card sx={{ width: '500px', p: 3, border: '2px solid #7F00FF', borderRadius: '10px' }}> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
               fullWidth
@@ -41,6 +43,9 @@ function UserSettingsPage() {
               {...register('name', { required: 'Name is required' })}
               error={!!errors.name}
               helperText={errors.name?.message}
+              InputLabelProps={{ style: { color: '#fff' } }}
+              InputProps={{ style: { color: '#fff' } }}
+              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
             />
             <TextField
               fullWidth
@@ -50,6 +55,9 @@ function UserSettingsPage() {
               {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' } })}
               error={!!errors.email}
               helperText={errors.email?.message}
+              InputLabelProps={{ style: { color: '#fff' } }}
+              InputProps={{ style: { color: '#fff' } }}
+              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
             />
             <TextField
               fullWidth
@@ -60,6 +68,9 @@ function UserSettingsPage() {
               {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
               error={!!errors.password}
               helperText={errors.password?.message}
+              InputLabelProps={{ style: { color: '#fff' } }}
+              InputProps={{ style: { color: '#fff' } }}
+              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
             />
             <TextField
               fullWidth
@@ -70,15 +81,19 @@ function UserSettingsPage() {
               {...register('passwordConfirmation', { required: 'Please confirm your password', validate: value => value === watch('password') || 'Passwords do not match' })}
               error={!!errors.passwordConfirmation}
               helperText={errors.passwordConfirmation?.message}
+              InputLabelProps={{ style: { color: '#fff' } }}
+              InputProps={{ style: { color: '#fff' } }}
+              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
             />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, bgcolor: '#7F00FF', color: '#fff' }}>
               SAVE CHANGES
             </Button>
           </form>
-        </Card>
+        {/* </Card> */}
+        </Container>
 
         {/* 右側のアカウント削除ボタン */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 4, mt: 15 }}>
           <Typography variant="body1" sx={{ color: '#fff', mb: 2 }}>
             Do you delete the account?
           </Typography>
