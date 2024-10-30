@@ -14,13 +14,18 @@ function SignUp() {
   } = useForm();
   const navigate = useNavigate();
 
-  // フォームが送信されたときの処理
-  const onSubmit = (data) => {
-    const res = signup(data);
-    alert("登録完了");
-    navigate('/signin');
-
+  // フォームが送信されたときの処理  bad requestのエラー処理未完成
+  const onSubmit = async (data) => {
+    try {
+      const res = await signup(data); // サインアップリクエストが成功した場合に処理を続行
+      alert("登録完了");
+      navigate('/signin'); // '/signin' ページにナビゲート
+    } catch (error) {
+      alert("登録に失敗しました");
+    }
   };
+
+  
   // , justifyContent: 'center', alignItems: 'center'
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
