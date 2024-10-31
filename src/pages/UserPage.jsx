@@ -3,10 +3,36 @@ import { AppBar, Toolbar, Tabs, Tab, Box, Container, Card, CardContent, Typograp
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useEffect, useState } from 'react';
+import { getUser } from "../api/user";
 
 
-function UserPage() {
-  // サンプルデータ
+// function UserPage() {
+//   // サンプルデータ
+//   const posts = [
+//     { title: 'Title', date: 'Updated today' },
+//     { title: 'Title', date: 'Updated yesterday' },
+//     { title: 'Title', date: 'Updated 2 days ago' },
+//     { title: 'Title', date: 'Updated today' },
+//     { title: 'Title', date: 'Updated yesterday' },
+//     { title: 'Title', date: 'Updated 2 days ago' },
+//     { title: 'Title', date: 'Updated today' },
+//     { title: 'Title', date: 'Updated 2 days ago' },
+//   ];
+
+  // // ユーザー情報の状態管理
+  // const [user, setUser] = useState({ name: '', email: '' });
+
+  // useEffect(() => {
+  //   // localStorageからユーザー情報を取得
+  //   const storedUser = localStorage.getItem('user');
+  //   if (storedUser) {
+  //     setUser(JSON.parse(storedUser)); // JSONからオブジェクトに変換して保存
+  //   }
+  // }, []);
+
+function UserPage({ userId }) {
+
+    // サンプルデータ
   const posts = [
     { title: 'Title', date: 'Updated today' },
     { title: 'Title', date: 'Updated yesterday' },
@@ -20,14 +46,21 @@ function UserPage() {
 
   // ユーザー情報の状態管理
   const [user, setUser] = useState({ name: '', email: '' });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // localStorageからユーザー情報を取得
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // JSONからオブジェクトに変換して保存
-    }
-  }, []);
+    // コンポーネントのマウント時にユーザー情報を取得
+    const fetchUser = async () => {
+      const result = await getUser(userId);
+      if (result.user) {
+        setUser(result.user);
+      } else if (result.error) {
+        setError(result.error);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);  
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>

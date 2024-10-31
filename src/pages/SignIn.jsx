@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Link } from '@mui/material';
 import { signin } from '../api/user';
 import { useNavigate } from 'react-router-dom';
-
+import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 function SignIn() {
   // useFormを使ってフォームの管理をセットアップ
@@ -13,6 +13,8 @@ function SignIn() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const { setUserId } = useUserContext();
+
 
   // フォームが送信されたときの処理
   // const onSubmit = async (data) => {
@@ -32,6 +34,7 @@ function SignIn() {
 
       if (res.token) {
         alert("ログイン完了");
+        setUserId(res.userId); // userIdを設定
         navigate('/user'); // '/user' ページにナビゲート
       } else {
        // 認証に失敗した場合の処理   alert("ログインに失敗しました: " + (res.error || "不明なエラー"));
