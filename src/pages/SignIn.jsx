@@ -12,29 +12,18 @@ function SignIn() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
-  const { setUserId } = useUserContext();
+  const navigate = useNavigate();  // ナビゲーションのフック
+  const { login } = useUserContext(); // UserContextからlogin関数を取得
 
 
   // フォームが送信されたときの処理
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const res = await signin(data); // サインインリクエストが成功した場合に処理を続行
-  //     alert("ログイン完了");
-  //     navigate('/user'); // '/user' ページにナビゲート
-  //   } catch (error) {
-  //     alert("ログインに失敗しました");
-  //   }
-  // };
-
-    // フォームが送信されたときの処理
   const onSubmit = async (data) => {
     try {
       const res = await signin(data); // サインインリクエストが成功した場合に処理を続行
 
       if (res.token) {
         alert("ログイン完了");
-        setUserId(res.userId); // userIdを設定
+        login(res.userId, res.user); // 認証情報をUserContextに設定
         navigate('/user'); // '/user' ページにナビゲート
       } else {
        // 認証に失敗した場合の処理   alert("ログインに失敗しました: " + (res.error || "不明なエラー"));

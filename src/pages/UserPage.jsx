@@ -4,35 +4,22 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useEffect, useState } from 'react';
 import { getUser } from "../api/user";
+import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 
-// function UserPage() {
-//   // サンプルデータ
-//   const posts = [
-//     { title: 'Title', date: 'Updated today' },
-//     { title: 'Title', date: 'Updated yesterday' },
-//     { title: 'Title', date: 'Updated 2 days ago' },
-//     { title: 'Title', date: 'Updated today' },
-//     { title: 'Title', date: 'Updated yesterday' },
-//     { title: 'Title', date: 'Updated 2 days ago' },
-//     { title: 'Title', date: 'Updated today' },
-//     { title: 'Title', date: 'Updated 2 days ago' },
-//   ];
 
-  // // ユーザー情報の状態管理
+function UserPage() {
+
+  const navigate = useNavigate();
+
+  // ユーザー情報の状態管理
   // const [user, setUser] = useState({ name: '', email: '' });
+  // const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   // localStorageからユーザー情報を取得
-  //   const storedUser = localStorage.getItem('user');
-  //   if (storedUser) {
-  //     setUser(JSON.parse(storedUser)); // JSONからオブジェクトに変換して保存
-  //   }
-  // }, []);
-
-function UserPage({ userId }) {
-
-    // サンプルデータ
+  // 認証状態の管理
+  const { user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
+  // サンプルデータ
   const posts = [
     { title: 'Title', date: 'Updated today' },
     { title: 'Title', date: 'Updated yesterday' },
@@ -44,23 +31,29 @@ function UserPage({ userId }) {
     { title: 'Title', date: 'Updated 2 days ago' },
   ];
 
-  // ユーザー情報の状態管理
-  const [user, setUser] = useState({ name: '', email: '' });
-  const [error, setError] = useState(null);
-
   useEffect(() => {
-    // コンポーネントのマウント時にユーザー情報を取得
-    const fetchUser = async () => {
-      const result = await getUser(userId);
-      if (result.user) {
-        setUser(result.user);
-      } else if (result.error) {
-        setError(result.error);
-      }
-    };
+    // 未認証の場合はサインインページにリダイレクト
+    if (!userId && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [userId, isAuthenticated, navigate]);
 
-    fetchUser();
-  }, [userId]);  
+  console.log(user);
+
+  // useEffect(() => {
+  //   // コンポーネントのマウント時に/users/:idにapiリクエストを送信 , ユーザー情報を取得
+  //   const fetchUser = async () => {
+  //     const result = await getUser(userId);
+  //     if (result.user) {
+  //       setUser(result.user);
+  //     } else if (result.error) {
+  //       setError(result.error);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, [userId]);  
+ 
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
@@ -79,10 +72,10 @@ function UserPage({ userId }) {
         {/* 左側のサイドバー */}
         <Box sx={{ width: '250px', bgcolor: '#1c1c1c', borderRadius: '8px', p: 3 }}>
           <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
-            {user.name}
+            {user?.name || 'Guest'}
           </Typography>
           <Typography variant="body2" sx={{ color: '#aaa', mb: 3 }}>
-            {user.email}
+            {user?.email || 'No email available'}
           </Typography>
 
           <Divider sx={{ bgcolor: '#444' }} />
