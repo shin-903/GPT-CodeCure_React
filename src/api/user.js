@@ -62,12 +62,14 @@ export const signin = async (data) => {
       const token = response.data.token;
       const user = response.data.user;
 
-      // ユーザー情報,トークンを保存
+      // トークンを保存
       localStorage.setItem('token', token);
       // localStorage.setItem('user', JSON.stringify(user));
       return {
         message: response.data.message,
-        token: token
+        token: token,
+        user: user // レスポンスにユーザー情報を追加
+
       };
     }
   } catch (error) {
