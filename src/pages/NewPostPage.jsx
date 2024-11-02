@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, Grid, TextField, Button, Typography, Card, CardContent } from '@mui/material';
+import { Link } from 'react-router-dom';
+
 
 function NewPostPage() {
   const [submittedContent, setSubmittedContent] = useState('');
@@ -34,9 +36,9 @@ function NewPostPage() {
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={1} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="New" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF', mr:8 }} />
-            <Tab label="Account" sx={{ color: '#fff' }} />
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Profile" component={Link} to="/user" sx={{ color: '#fff' }} />                                
           </Tabs>
         </Toolbar>
       </AppBar>

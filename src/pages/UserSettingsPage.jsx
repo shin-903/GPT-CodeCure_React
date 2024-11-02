@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card } from '@mui/material';
+import { Link } from 'react-router-dom';
+
 
 function UserSettingsPage() {
   // react-hook-form の設定
@@ -32,17 +34,17 @@ function UserSettingsPage() {
       {/* AppBar with Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
-          <Tabs value={2} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="New" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="Account" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF' }} />
+          <Tabs >
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Profile" component={Link} to="/user" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>
       </AppBar>
 
       <Container sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
         {/* 左側のユーザー編集フォーム */}
-        <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 20 }}>
+        <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 15 }}>
 
         {/* <Card sx={{ width: '500px', p: 3, border: '2px solid #7F00FF', borderRadius: '10px' }}> */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,10 +56,8 @@ function UserSettingsPage() {
               {...register('name', { required: 'Name is required' })}
               error={!!errors.name}
               helperText={errors.name?.message}
-              InputLabelProps={{ style: { color: '#fff' } }}
-              InputProps={{ style: { color: '#fff' } }}
-              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-            />
+              sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+              />
             <TextField
               fullWidth
               label="Email"
@@ -66,10 +66,12 @@ function UserSettingsPage() {
               {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' } })}
               error={!!errors.email}
               helperText={errors.email?.message}
-              InputLabelProps={{ style: { color: '#fff' } }}
-              InputProps={{ style: { color: '#fff' } }}
-              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-            />
+              sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
+              ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+                WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+                WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+                transition: 'background-color 5000s ease-in-out 0s'
+              }}}            />
             <TextField
               fullWidth
               label="Password"
@@ -79,10 +81,12 @@ function UserSettingsPage() {
               {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
               error={!!errors.password}
               helperText={errors.password?.message}
-              InputLabelProps={{ style: { color: '#fff' } }}
-              InputProps={{ style: { color: '#fff' } }}
-              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-            />
+              sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
+              ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+                WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+                WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+                transition: 'background-color 5000s ease-in-out 0s'
+              }}}            />
             <TextField
               fullWidth
               label="Password confirmation"
@@ -92,10 +96,8 @@ function UserSettingsPage() {
               {...register('passwordConfirmation', { required: 'Please confirm your password', validate: value => value === watch('password') || 'Passwords do not match' })}
               error={!!errors.passwordConfirmation}
               helperText={errors.passwordConfirmation?.message}
-              InputLabelProps={{ style: { color: '#fff' } }}
-              InputProps={{ style: { color: '#fff' } }}
-              sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-            />
+              sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+              />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, bgcolor: '#7F00FF', color: '#fff' }}>
               SAVE CHANGES
             </Button>
@@ -104,7 +106,7 @@ function UserSettingsPage() {
         </Container>
 
         {/* 右側のアカウント削除ボタン */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 4, mt: 15 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 10, mt: 10 }}>
           <Typography variant="body1" sx={{ color: '#fff', mb: 2 }}>
             Do you delete the account?
           </Typography>

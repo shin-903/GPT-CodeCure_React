@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Link } from '@mui/material';
+import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography } from '@mui/material';
 import { signup } from '../api/user';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function SignUp() {
   // useFormを使ってフォームの管理をセットアップ
@@ -44,9 +44,9 @@ function SignUp() {
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={2} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="Sign in" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="Sign up" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF' }} />
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Sign in" component={Link} to="/signin" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Sign up" component={Link} to="/signup" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>
       </AppBar>
@@ -146,7 +146,7 @@ function SignUp() {
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ color: '#fff' }}>
           Have an account?{' '}
-          <Link href="/signin" variant="body2" sx={{ color: '#7F00FF' }}>
+          <Link to="/signin" style={{ color: '#7F00FF', textDecoration: 'none' }} variant="body2">
             Sign In
           </Link>
         </Typography>

@@ -1,18 +1,41 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, Card, CardContent, Typography, Avatar, Grid, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
+import { getPosts } from '../api/user';
 
 const Home = () => {
-  const posts = [
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated yesterday' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated yesterday' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-  ];
+  
+  // 日付をJSTに変換する関数
+  const formatDateToJST = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Tokyo'
+    };
+    return new Intl.DateTimeFormat('ja-JP', options).format(date);
+  };
+
+  const [posts, setPosts] = useState([]); // postsの状態を追加
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const result = await getPosts();
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setPosts(result.posts);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
@@ -32,9 +55,9 @@ const Home = () => {
         <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Tabs value={0} textColor="inherit" indicatorColor="primary">
-              <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-              <Tab label="New" sx={{ color: '#fff', mr:8 }} />
-              <Tab label="Account" sx={{ color: '#fff' }} />
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Profile" component={Link} to="/user" sx={{ color: '#fff' }} />
             </Tabs>
           </Box>
           {/* <Typography sx={{ ml: 'auto', color: '#fff' }}>Log out</Typography> */}
@@ -52,25 +75,38 @@ const Home = () => {
       </Box>
 
       {/* Post List */}
-      <Container sx={{ mt: 4 }}>
-        <Grid container spacing={3}>
-          {posts.map((post, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1c1c1c', p: 2 }}> {/* カードの色を変更 */}
-                {/* <Avatar sx={{ bgcolor: '#7F00FF', mr: 2 }}>A</Avatar> 　アバター表示　*/}
-                <CardContent>
-                  <Typography variant="h6" component="div" sx={{ color: '#fff' }}> {/* 投稿内容の文字色を変更 */}
-                    {post.title}
-                  </Typography>
-                  <Typography variant="body2" color="#aaa"> {/* 投稿日時の文字色を変更 */}
-                    {post.date}
-                  </Typography>
-                </CardContent>
-              </Card>
+      <Box sx={{ mt: 4, mb: 20 }}> {/* Boxで全体をラップし、上下のマージンを設定 */}
+        <Container>
+          {posts.length === 0 ? ( // 投稿がない場合のメッセージ
+            <Typography variant="h6" align="center" sx={{ color: '#aaa', mt: 4 }}>
+              No posts available
+            </Typography>
+          ) : (
+            <Grid container spacing={3}>
+              {posts.map((post, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1c1c1c', p: 2 }}>
+                    {/* <Avatar sx={{ bgcolor: '#7F00FF', mr: 2 }}>A</Avatar>  アバター表示 */}
+                    <CardContent>
+                      <Typography
+                        variant="h6"
+                        component={Link}
+                        to={`/post/${post.id}`} // post.idに基づく動的なリンク
+                        sx={{ color: '#fff', textDecoration: 'none' }} 
+                      >                        
+                        {post.title}
+                      </Typography>
+                      <Typography variant="body2" color="#aaa">
+                        {formatDateToJST(post.created_at)}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Container>
+          )}
+        </Container>
+      </Box>
     </Box>
   );
 };
