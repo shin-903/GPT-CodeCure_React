@@ -13,23 +13,20 @@ function UserPage() {
 
   const navigate = useNavigate();
 
-  // ユーザー情報の状態管理
-  // const [user, setUser] = useState({ name: '', email: '' });
-  // const [error, setError] = useState(null);
-
   // 認証状態の管理
-  const { user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
+  const { posts, user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
+
   // サンプルデータ
-  const posts = [
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated yesterday' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated yesterday' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-    { title: 'Title', date: 'Updated today' },
-    { title: 'Title', date: 'Updated 2 days ago' },
-  ];
+  // const posts = [
+  //   { title: 'Title', date: 'Updated today' },
+  //   { title: 'Title', date: 'Updated yesterday' },
+  //   { title: 'Title', date: 'Updated 2 days ago' },
+  //   { title: 'Title', date: 'Updated today' },
+  //   { title: 'Title', date: 'Updated yesterday' },
+  //   { title: 'Title', date: 'Updated 2 days ago' },
+  //   { title: 'Title', date: 'Updated today' },
+  //   { title: 'Title', date: 'Updated 2 days ago' },
+  // ];
 
   useEffect(() => {
     // 未認証の場合はサインインページにリダイレクト
@@ -40,20 +37,7 @@ function UserPage() {
 
   console.log(user);
 
-  // useEffect(() => {
-  //   // コンポーネントのマウント時に/users/:idにapiリクエストを送信 , ユーザー情報を取得
-  //   const fetchUser = async () => {
-  //     const result = await getUser(userId);
-  //     if (result.user) {
-  //       setUser(result.user);
-  //     } else if (result.error) {
-  //       setError(result.error);
-  //     }
-  //   };
 
-  //   fetchUser();
-  // }, [userId]);  
- 
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
