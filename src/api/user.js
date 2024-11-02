@@ -189,21 +189,17 @@ export const getPost = async (id) => {
 };
 
 // /postsエンドポイントにGETリクエストを送信する関数
-// export const getPosts = async () => {
-//   try {
-//     const response = await apiClient.get('/posts');
-//     console.log(response);
-//     if (response.status === 200) {
-//       return {
-//         posts: response.data.posts
-//       };
-//     }
-//   } catch (error) {
-//     console.error("An unexpected error occurred:", error);
-//     return { error: "An unexpected error occurred" };
-//   }
-// };
-
+export const getPosts = async () => {
+  try {
+    const response = await apiClient.get('/posts');
+    if (response.status === 200) {
+      return { posts: response.data.posts };
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
+  }
+};
 // /postsエンドポイントにPOSTリクエストを送信する関数
 // export const createPost = async (data) => {
 //   try {

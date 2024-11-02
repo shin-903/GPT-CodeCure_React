@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Link } from '@mui/material';
+import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography } from '@mui/material';
 import { signin } from '../api/user';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 function SignIn() {
@@ -57,9 +57,9 @@ function SignIn() {
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%', marginTop: 0 }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={1} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="Sign in" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF', mr:8 }} />
-            <Tab label="Sign up" sx={{ color: '#fff' }} />
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Sign in" component={Link} to="/signin" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Sign up" component={Link} to="/signup" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>
       </AppBar>
@@ -125,11 +125,11 @@ function SignIn() {
         </form>
       </Container>
 
-      {/* Sign Up Link 　未完成　*/}
+      {/* Sign Up Link */}
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Typography variant="body2" sx={{ color: '#fff' }}>
           Don't have an account?{' '}
-          <Link href="/signup" variant="body2" sx={{ color: '#7F00FF' }}>
+          <Link to="/signup" style={{ color: '#7F00FF', textDecoration: 'none' }} variant="body2">
             Sign Up
           </Link>
         </Typography>

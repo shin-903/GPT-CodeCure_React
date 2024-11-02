@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, Typography, Button, Card, CardContent, Chip } from '@mui/material';
 import { getPost } from '../api/user';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 
 const PostPage = () => {
@@ -65,10 +65,10 @@ const PostPage = () => {
       {/* Navigation Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
-          <Tabs value={0} textColor="inherit" indicatorColor="primary" sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="New" sx={{ color: '#fff', mr:8 }} />
-            <Tab label="Account" sx={{ color: '#fff' }} />
+          <Tabs sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Profile" component={Link} to="/user" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>
       </AppBar>
