@@ -42,13 +42,23 @@ function SignIn() {
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
-      
+
+      {/* Header Title */}
+      <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+          GPT
+        </Typography>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+          CodeCure
+        </Typography>
+      </Box>
+
       {/* Navigation bar 　上部のマージンを縮小　*/}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%', marginTop: 0 }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={1} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff' }} />
-            <Tab label="Sign in" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF' }} />
+            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
+            <Tab label="Sign in" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF', mr:8 }} />
             <Tab label="Sign up" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>

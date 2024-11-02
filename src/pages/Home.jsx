@@ -16,13 +16,24 @@ const Home = () => {
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
+
+      {/* Header Title */}
+      <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+          GPT
+        </Typography>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+          CodeCure
+        </Typography>
+      </Box>
+
       {/* AppBar with Tabs  login状況によって変更　*/}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Tabs value={0} textColor="inherit" indicatorColor="primary">
-              <Tab label="Home" sx={{ color: '#fff' }} />
-              <Tab label="New" sx={{ color: '#fff' }} />
+              <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
+              <Tab label="New" sx={{ color: '#fff', mr:8 }} />
               <Tab label="Account" sx={{ color: '#fff' }} />
             </Tabs>
           </Box>
