@@ -169,6 +169,25 @@ export const getUser = async (userId) => {
 //   }
 // };
 
+// /posts/:idエンドポイントにGETリクエストを送信する関数
+export const getPost = async (id) => {
+  try {
+    const response = await apiClient.get(`/posts/${id}`);
+    console.log(response);
+    if (response.status === 200) {
+      const post = response.data.post;
+      const tags = response.data.tags;
+      return {
+        post: post,
+        tags: tags
+      };
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
+  }
+};
+
 // /postsエンドポイントにGETリクエストを送信する関数
 // export const getPosts = async () => {
 //   try {
@@ -213,21 +232,8 @@ export const getUser = async (userId) => {
 //   }
 // };
 
-// /posts/:idエンドポイントにGETリクエストを送信する関数
-// export const getPost = async (id) => {
-//   try {
-//     const response = await apiClient.get(`/posts/${id}`);
-//     console.log(response);
-//     if (response.status === 200) {
-//       return {
-//         post: response.data.post
-//       };
-//     }
-//   } catch (error) {
-//     console.error("An unexpected error occurred:", error);
-//     return { error: "An unexpected error occurred" };
-//   }
-// };
+
+
 
 // /posts/:idエンドポイントにPATCHリクエストを送信する関数
 // export const updatePost = async (id, data) => {

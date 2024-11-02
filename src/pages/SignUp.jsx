@@ -48,7 +48,7 @@ function SignUp() {
         </Typography>
 
         {/* Form Handling */}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           {/* Name Field */}
           <TextField
             variant="outlined"
@@ -58,9 +58,7 @@ function SignUp() {
             {...register('name', { required: 'Name is required' })}
             error={!!errors.name}
             helperText={errors.name ? errors.name.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
           />
 
           {/* Email Field */}
@@ -72,9 +70,9 @@ function SignUp() {
             {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' } })}
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            autoComplete="off" // オートフィルを無効に設定
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
+            , '&:hover fieldset': { borderColor: '#7F00FF' }}}
           />
 
           {/* Password Field */}
@@ -87,9 +85,9 @@ function SignUp() {
             {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
             error={!!errors.password}
             helperText={errors.password ? errors.password.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            autoComplete="new-password" // オートフィルを無効に設定
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
+            , '&:hover fieldset': { borderColor: '#7F00FF' }}}
           />
 
           {/* Password Confirmation Field */}
@@ -105,9 +103,7 @@ function SignUp() {
             })}
             error={!!errors.passwordConfirmation}
             helperText={errors.passwordConfirmation ? errors.passwordConfirmation.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
           />
 
           {/* Submit Button */}

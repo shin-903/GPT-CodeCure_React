@@ -71,9 +71,12 @@ function SignIn() {
             {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' } })}
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' } 
+            , '&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+              WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+              WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+              transition: 'background-color 5000s ease-in-out 0s'
+            } }}
           />
 
           {/* Password Field */}
@@ -86,9 +89,12 @@ function SignIn() {
             {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
             error={!!errors.password}
             helperText={errors.password ? errors.password.message : ''}
-            InputLabelProps={{ style: { color: '#fff' } }}
-            InputProps={{ style: { color: '#fff' } }}
-            sx={{ input: { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
+            sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
+            , '&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+              WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+              WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+              transition: 'background-color 5000s ease-in-out 0s'
+            }}}
           />
 
           {/* Submit Button */}
