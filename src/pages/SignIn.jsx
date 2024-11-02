@@ -6,12 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 function SignIn() {
+
   // useFormを使ってフォームの管理をセットアップ
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();  // ナビゲーションのフック
   const { login } = useUserContext(); // UserContextからlogin関数を取得
 
@@ -24,6 +26,7 @@ function SignIn() {
       if (res.token) {
         alert("ログイン完了");
         login(res.userId, res.user); // 認証情報をUserContextに設定
+        console.log("login関数に渡されたユーザー情報:", res.user, res.userId); // (デバック用)
         navigate('/user'); // '/user' ページにナビゲート
       } else {
        // 認証に失敗した場合の処理   alert("ログインに失敗しました: " + (res.error || "不明なエラー"));

@@ -8,6 +8,7 @@ const apiClient = axios.create({
   }
 });
 
+
 // リクエストのインターセプターを設定
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -68,7 +69,8 @@ export const signin = async (data) => {
       return {
         message: response.data.message,
         token: token,
-        user: user // レスポンスにユーザー情報を追加
+        user: user, // レスポンスにユーザー情報を追加
+        userId: user.id // userIdを追加
 
       };
     }
@@ -108,7 +110,9 @@ export const getUser = async (userId) => {
     console.log(response);
     if (response.status === 200) {
       return {
-        user: response.data.user
+        user: response.data.user,
+        posts: response.data.posts // レスポンスにlogin関数で用いるpostsを追加
+
       };
     }
   } catch (error) {
