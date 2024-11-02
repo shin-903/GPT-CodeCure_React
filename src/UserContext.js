@@ -1,6 +1,6 @@
 // UserContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUser } from "./api/user";
+// import { getUser } from "./api/user";
 
 
 const UserContext = createContext();
@@ -33,33 +33,34 @@ export const UserProvider = ({ children }) => {
 // };
 
 // ログイン関数（ユーザーIDとユーザー情報を設定し、認証状態を更新）
-const login = async (id, user) => {
+const login = async (id, user, posts) => {
     setUser(user);
     setUserId(id);
     setIsAuthenticated(true);
+    setPosts(posts); // 取得した投稿をセット
   };
 
-  // isAuthenticatedとuserIdの変更を監視し、user情報とpostsを取得 (userIdが確実に設定された状態でgetUserを実行)
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (isAuthenticated && userId) {
-        try {
-          const result = await getUser(userId);
-          if (result.user) {
-            setUser(result.user);
-            setPosts(result.posts); // 取得した投稿をセット
-            console.log("ユーザー情報の取得に成功しました");
-          } else {
-            console.error("ユーザー情報の取得に失敗しました");
-          }
-        } catch (error) {
-          console.error("投稿の取得中にエラーが発生しました:", error);
-        }
-      }
-    };
+// login機能にposts情報取得を追加したため、useEffectを削除
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       if (isAuthenticated && userId) {
+//         try {
+//           const result = await getUser(userId);
+//           if (result.user) {
+//             setUser(result.user);
+//             setPosts(result.posts); // 取得した投稿をセット
+//             console.log("ユーザー情報の取得に成功しました");
+//           } else {
+//             console.error("ユーザー情報の取得に失敗しました");
+//           }
+//         } catch (error) {
+//           console.error("投稿の取得中にエラーが発生しました:", error);
+//         }
+//       }
+//     };
 
-    fetchUserData();
-  }, [isAuthenticated, userId]);
+//     fetchUserData();
+//   }, [isAuthenticated, userId]);
 
   return (
     <UserContext.Provider value={{ userId, setUserId, isAuthenticated, login, user, setUser, posts, setPosts }}>

@@ -62,15 +62,18 @@ export const signin = async (data) => {
     if (response.status === 200) {
       const token = response.data.token;
       const user = response.data.user;
+      const posts = response.data.posts; // apiから返ってきたpostsを関数内のpostsに定義
 
       // トークンを保存
       localStorage.setItem('token', token);
-      // localStorage.setItem('user', JSON.stringify(user));
+
+      //　呼び出し元でresを用いた変数を使用可能にする
       return {
         message: response.data.message,
         token: token,
         user: user, // レスポンスにユーザー情報を追加
-        userId: user.id // userIdを追加
+        userId: user.id, // userIdを追加
+        posts: posts // レスポンスにpostsを追加
 
       };
     }
