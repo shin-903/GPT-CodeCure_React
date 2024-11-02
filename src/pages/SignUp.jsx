@@ -30,12 +30,22 @@ function SignUp() {
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
       
+      {/* Header Title */}
+      <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+          GPT
+        </Typography>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+          CodeCure
+        </Typography>
+      </Box>
+
       {/* Navigation bar 上部のマージンを縮小*/}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444', width: '100%' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={2} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff' }} />
-            <Tab label="Sign in" sx={{ color: '#fff' }} />
+            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
+            <Tab label="Sign in" sx={{ color: '#fff', mr:8 }} />
             <Tab label="Sign up" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF' }} />
           </Tabs>
         </Toolbar>
@@ -72,7 +82,11 @@ function SignUp() {
             helperText={errors.email ? errors.email.message : ''}
             autoComplete="off" // オートフィルを無効に設定
             sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
-            , '&:hover fieldset': { borderColor: '#7F00FF' }}}
+            ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+              WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+              WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+              transition: 'background-color 5000s ease-in-out 0s'
+            }}}
           />
 
           {/* Password Field */}
@@ -87,7 +101,11 @@ function SignUp() {
             helperText={errors.password ? errors.password.message : ''}
             autoComplete="new-password" // オートフィルを無効に設定
             sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
-            , '&:hover fieldset': { borderColor: '#7F00FF' }}}
+            ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
+              WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
+              WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+              transition: 'background-color 5000s ease-in-out 0s'
+            }}}
           />
 
           {/* Password Confirmation Field */}

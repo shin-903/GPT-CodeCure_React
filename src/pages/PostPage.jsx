@@ -16,6 +16,7 @@ const PostPage = () => {
   const [tags, setTags] = useState([]);
   const [error, setError] = useState(null);
 
+  
   // 日付をJSTに変換する関数
   const formatDateToJST = (dateString) => {
     const date = new Date(dateString);
@@ -50,12 +51,23 @@ const PostPage = () => {
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff', pb: 8 }}>
-      {/* AppBar with Tabs */}
+
+      {/* Header Title */}
+      <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+          GPT
+        </Typography>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+          CodeCure
+        </Typography>
+      </Box>
+
+      {/* Navigation Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
-          <Tabs value={0} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff' }} />
-            <Tab label="New" sx={{ color: '#fff' }} />
+          <Tabs value={0} textColor="inherit" indicatorColor="primary" sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
+            <Tab label="New" sx={{ color: '#fff', mr:8 }} />
             <Tab label="Account" sx={{ color: '#fff' }} />
           </Tabs>
         </Toolbar>
@@ -66,7 +78,7 @@ const PostPage = () => {
         <Card sx={{ width: '600px', p: 2, bgcolor: '#1c1c1c', borderRadius: '8px', border: '2px solid #7F00FF' }}>
           <CardContent>
             <Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
-            {formatDateToJST(post.created_at)}
+              {formatDateToJST(post.created_at)}
             </Typography>
             <Typography variant="h6" sx={{ color: '#fff', mb: 2 }}>
               {post.title}
@@ -75,10 +87,10 @@ const PostPage = () => {
               {post.content}
             </Typography>
             {/* タグの表示 */}
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Chip label="Tag" sx={{ bgcolor: '#e0e0e0' }} />
-              <Chip label="Tag" sx={{ bgcolor: '#e0e0e0' }} />
-              <Chip label="Tag" sx={{ bgcolor: '#e0e0e0' }} />
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {tags.map((tag) => (
+                <Chip key={tag.id} label={tag.name} sx={{ bgcolor: '#e0e0e0' }} />
+              ))}
             </Box>
           </CardContent>
         </Card>

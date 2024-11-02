@@ -45,20 +45,31 @@ function UserPage() {
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
+      
+      {/* Header Title */}
+      <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+          GPT
+        </Typography>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+          CodeCure
+        </Typography>
+      </Box>
+
       {/* AppBar with Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={2} textColor="inherit" indicatorColor="primary">
-            <Tab label="Home" sx={{ color: '#fff' }} />
-            <Tab label="New" sx={{ color: '#fff' }} />
+            <Tab label="Home" sx={{ color: '#fff', mr:8 }} />
+            <Tab label="New" sx={{ color: '#fff', mr:8 }} />
             <Tab label="Account" sx={{ color: '#fff', borderBottom: '2px solid #7F00FF' }} />
           </Tabs>
         </Toolbar>
       </AppBar>
 
-      <Container sx={{ display: 'flex', mt: 4 }}>
+      <Container sx={{ display: 'flex', mt: 4, mb: 4 }}>
         {/* 左側のサイドバー */}
-        <Box sx={{ width: '250px', bgcolor: '#1c1c1c', borderRadius: '8px', p: 3 }}>
+        <Box sx={{ width: '250px', bgcolor: '#1c1c1c', borderRadius: '8px', p: 3 ,mb: 4}}>
           <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
             {user?.name || 'Guest'}
           </Typography>
@@ -92,7 +103,7 @@ function UserPage() {
         
 
         {/* 右側の投稿リスト */}
-        <Grid container spacing={3} sx={{ ml: 4 }}>
+        <Grid container spacing={3} sx={{ ml: 4 ,mb: 4}}>
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
