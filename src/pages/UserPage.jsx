@@ -4,7 +4,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useEffect, useState } from 'react';
 import { getUser } from "../api/user";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 
@@ -16,17 +16,21 @@ function UserPage() {
   // 認証状態の管理
   const { posts, user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
 
-  // サンプルデータ
-  // const posts = [
-  //   { title: 'Title', date: 'Updated today' },
-  //   { title: 'Title', date: 'Updated yesterday' },
-  //   { title: 'Title', date: 'Updated 2 days ago' },
-  //   { title: 'Title', date: 'Updated today' },
-  //   { title: 'Title', date: 'Updated yesterday' },
-  //   { title: 'Title', date: 'Updated 2 days ago' },
-  //   { title: 'Title', date: 'Updated today' },
-  //   { title: 'Title', date: 'Updated 2 days ago' },
-  // ];
+  // 日付をJSTに変換する関数
+  const formatDateToJST = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Tokyo'
+    };
+    return new Intl.DateTimeFormat('ja-JP', options).format(date);
+  };
+
 
   useEffect(() => {
     // 未認証の場合はサインインページにリダイレクト
@@ -89,21 +93,42 @@ function UserPage() {
 
         {/* 右側の投稿リスト */}
         <Grid container spacing={3} sx={{ ml: 4 }}>
-          {posts.map((post, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1c1c1c', p: 2 }}> {/* カードの色を変更 */}
-                {/* <Avatar sx={{ bgcolor: '#7F00FF', mr: 2 }}>A</Avatar> 　アバター表示　*/}
-                <CardContent>
-                  <Typography variant="h6" component="div" sx={{ color: '#fff' }}> {/* 投稿内容の文字色を変更 */}
-                    {post.title}
-                  </Typography>
-                  <Typography variant="body2" color="#aaa"> {/* 投稿日時の文字色を変更 */}
-                    {post.date}
-                  </Typography>
-                </CardContent>
-              </Card>
+          {posts.length > 0 ? (
+            posts.map((post, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1c1c1c', p: 2 }}>
+                  <CardContent>
+                    <Typography
+                      variant="h6"
+                      component={Link}
+                      to={`/post/${post.id}`} // post.idに基づく動的なリンク
+                      sx={{ color: '#fff', textDecoration: 'none' }} 
+                    >
+                      {post.title}
+                    </Typography>
+                    <Typography variant="body2" color="#aaa">
+                      {formatDateToJST(post.created_at)}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: '#aaa',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '70vh', // 画面中央に配置
+                }}
+              >
+                No posts available
+              </Typography>
             </Grid>
-          ))}
+          )}
         </Grid>
       </Container>
     </Box>

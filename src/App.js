@@ -6,6 +6,8 @@ import SignIn from "./pages/SignIn";
 import UserPage from "./pages/UserPage";
 import NewPostPage from "./pages/NewPostPage";
 import UserSettingsPage from "./pages/UserSettingsPage";
+import PostPage from "./pages/PostPage";
+
 import { UserProvider } from './UserContext';
 
 const App = () => {
@@ -18,6 +20,7 @@ const App = () => {
         <Route path="/new/post" element={<UserProvider><NewPostPage /></UserProvider>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<UserProvider><SignIn /></UserProvider>} />
+        <Route path="/post/:id" element={<UserProvider><PostPage /></UserProvider>} />
       </Routes>
     </Router>
   );
