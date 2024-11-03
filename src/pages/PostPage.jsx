@@ -67,6 +67,7 @@ const PostPage = () => {
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs sx={{ display: 'flex', justifyContent: 'center' }}>
             <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
+            <Tab label="Gpt" component={Link} to="/gpt" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="Profile" component={Link} to="/user" sx={{ color: '#fff' }} />
           </Tabs>

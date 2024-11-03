@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { gptResponse } from '../api/user'; // user.js から関数をインポート
 
-function NewPostPage() {
-  const [submittedContent, setSubmittedContent] = useState('');
+function GptPage() {
   const [gptResponseData, setGptResponse] = useState('');
+  const [question, setQuestion] = useState('');
 
-  // react-hook-form の設定
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
-  // フォームの送信処理
-  const onSubmitPost = async (data) => {
-    setSubmittedContent(data.postContent);
-    const response = await gptResponse(data.postContent); // APIリクエストを送信
+  const handleQuestionSubmit = async (e) => {
+    e.preventDefault();
+    const response = await gptResponse(question); // APIリクエストを送信
     if (response.response) {
       setGptResponse(response.response); // GPTからのレスポンスを設定
     }
@@ -39,7 +34,7 @@ function NewPostPage() {
       {/* AppBar with Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
-          <Tabs value={2} textColor="inherit" indicatorColor="primary">
+          <Tabs value={1} textColor="inherit" indicatorColor="primary">
             <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="Gpt" component={Link} to="/gpt" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
@@ -48,23 +43,22 @@ function NewPostPage() {
         </Toolbar>
       </AppBar>
 
-      <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '100%', maxWidth: 600 }}>
+      <Container sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
+        {/* GPTへの質問送信フィード */}
+        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '48%', height: '100%' }}>
           <CardContent>
-            <Typography variant="h6" sx={{ color: '#fff', mb: 2 }}>
-              Create New Post
+            <Typography variant="h6" sx={{ color: '#7F00FF', mb: 2 }}>
+              ChatGPTに質問を送信する
             </Typography>
-
-            <form onSubmit={handleSubmit(onSubmitPost)}>
+            <form onSubmit={handleQuestionSubmit}>
               <TextField
                 variant="outlined"
                 multiline
                 rows={5}
                 fullWidth
-                placeholder="Write your post here..."
-                {...register('postContent', { required: 'This field is required' })}
-                error={!!errors.postContent}
-                helperText={errors.postContent?.message}
+                placeholder="Ask your question here..."
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
                 sx={{
                   bgcolor: '#333',
                   color: '#fff',
@@ -80,13 +74,30 @@ function NewPostPage() {
               />
               <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
                 <Button type="submit" variant="contained" sx={{ bgcolor: '#7F00FF' }}>
-                  POST &gt;
+                  SEND &gt;
                 </Button>
-                <Button component={Link} to="/gpt" variant="contained" sx={{ bgcolor: '#7F00FF' }}>
-                  Go to GPT Page
+                <Button component={Link} to="/new/post" variant="contained" sx={{ bgcolor: '#7F00FF' }}>
+                  New Post
                 </Button>
               </Box>
             </form>
+          </CardContent>
+        </Card>
+
+        {/* ChatGPTのレスポンス表示フィード */}
+        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '48%', height: '100%' }}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Typography variant="h6" sx={{ color: '#fff', mb: 2 }}>
+              ChatGPTのレスポンス
+            </Typography>
+            <Box sx={{ bgcolor: '#333', p: 2, borderRadius: 1, flex: '1', overflowY: 'auto' }}>
+              <Typography sx={{ color: '#fff' }}>{gptResponseData}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+              <Button variant="contained" sx={{ bgcolor: '#7F00FF' }} onClick={handleCopy}>
+                COPY &gt;
+              </Button>
+            </Box>
           </CardContent>
         </Card>
       </Container>
@@ -94,4 +105,4 @@ function NewPostPage() {
   );
 }
 
-export default NewPostPage;
+export default GptPage;
