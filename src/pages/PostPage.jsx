@@ -75,7 +75,7 @@ const PostPage = () => {
       </AppBar>
 
       {/* Post Card */}
-      <Container sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
+      <Container sx={{ mt: 8, display: 'flex', justifyContent: 'center', mb: 5 }}>
         <Card sx={{ width: '600px', p: 2, bgcolor: '#1c1c1c', borderRadius: '8px', border: '2px solid #7F00FF' }}>
           <CardContent>
             <Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
@@ -98,7 +98,7 @@ const PostPage = () => {
       </Container>
 
       {/* Fixed Delete Button Section */}
-      <Box sx={{ position: 'fixed', bottom: 0, left: 0, width: '100%', bgcolor: '#000', py: 2, borderTop: '1px solid #444', textAlign: 'center' }}>
+      <Box sx={{  bottom: 0, left: 0, width: '100%', bgcolor: '#000', py: 2, borderTop: '1px solid #444', textAlign: 'center' }}>
         <Typography variant="body1" sx={{ color: '#fff', mb: 1 }}>
           Do you delete the Post?
         </Typography>

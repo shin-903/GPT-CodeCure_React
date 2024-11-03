@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 
 function UserSettingsPage() {
@@ -17,6 +18,19 @@ function UserSettingsPage() {
   const handleDelete = () => {
     console.log('Account deletion triggered');
   };
+
+  const navigate = useNavigate();
+  // 認証状態の管理
+  const { posts, user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
+
+  useEffect(() => {
+    // 未認証の場合はサインインページにリダイレクト
+    if (!userId && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [userId, isAuthenticated, navigate]);
+
+  console.log(user);  
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>

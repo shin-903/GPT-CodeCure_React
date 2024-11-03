@@ -1,37 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card, CardContent } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { gptResponse } from '../api/user'; // user.js から関数をインポート
+import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card, CardContent, Select, MenuItem, Chip } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { createPost } from '../api/user'; // createPost関数をインポート
+import { useUserContext } from '../UserContext'; // コンテキストのフック
 
 function NewPostPage() {
-  const [submittedContent, setSubmittedContent] = useState('');
   const [gptResponseData, setGptResponse] = useState('');
-
+  const [tags, setTags] = useState([]);
+  
   // react-hook-form の設定
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // フォームの送信処理
-  const onSubmitPost = async (data) => {
-    setSubmittedContent(data.postContent);
-    const response = await gptResponse(data.postContent); // APIリクエストを送信
-    if (response.response) {
-      setGptResponse(response.response); // GPTからのレスポンスを設定
+  const navigate = useNavigate();
+  const { userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態を取得
+
+  useEffect(() => {
+    if (!userId && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [userId, isAuthenticated, navigate]);
+
+  const availableTags = [
+    { id: 1, name: 'Ruby' },
+    { id: 2, name: 'Rails' },
+    { id: 3, name: 'JavaScript' },
+    { id: 4, name: 'React' },
+    { id: 5, name: 'Docker' },
+    { id: 6, name: 'SQL' },
+    { id: 7, name: 'Python' },
+    { id: 8, name: 'CSS' },
+    { id: 9, name: 'HTML' },
+    { id: 10, name: 'AWS' },
+    { id: 11, name: 'Git' },
+  ];
+
+  const handleTagAdd = (event) => {
+    const value = event.target.value;
+    if (value && !tags.includes(value)) {
+      setTags([...tags, value]);
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(gptResponseData);
+  const handleTagRemove = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+  // フォームの送信処理
+  const onSubmitPost = async (data) => {
+    const postData = {
+      title: data.postTitle,
+      content: data.postContent,
+      userId: userId,
+      tagIds: tags.map(tag => availableTags.find(t => t.name === tag)?.id) // タグ名からIDを取得
+    };
+
+    // APIリクエストを送信
+    const response = await createPost(postData);
+    if (response.error) {
+      console.error(response.error);
+    } else {
+      console.log('Post created successfully:', response.post);
+      setGptResponse(response.post); 
+      navigate('/'); // ホームにリダイレクト
+    }
   };
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff', display: 'flex', flexDirection: 'column' }}>
       {/* Header Title */}
       <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
-        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
+        <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt: 1, ml: 1 }}>
           GPT
         </Typography>
-        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt:1 }}>
+        <Typography variant="h5" sx={{ color: '#89CFF0', fontSize: '1.8rem', mt: 1 }}>
           CodeCure
         </Typography>
       </Box>
@@ -49,17 +91,37 @@ function NewPostPage() {
       </AppBar>
 
       <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '100%', maxWidth: 600 }}>
+        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '100%', maxWidth: 600, mb: 5}}>
           <CardContent>
-            <Typography variant="h6" sx={{ color: '#fff', mb: 2 }}>
+            <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontSize: '1rem' }}>
               Create New Post
             </Typography>
 
             <form onSubmit={handleSubmit(onSubmitPost)}>
               <TextField
                 variant="outlined"
+                fullWidth
+                placeholder="Post Title"
+                {...register('postTitle', { required: 'This field is required' })}
+                error={!!errors.postTitle}
+                helperText={errors.postTitle?.message}
+                sx={{
+                  bgcolor: '#333',
+                  color: '#fff',
+                  mb: 2,
+                  input: { color: '#fff' },
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#444',
+                    },
+                  },
+                }}
+              />
+
+              <TextField
+                variant="outlined"
                 multiline
-                rows={5}
+                rows={16}
                 fullWidth
                 placeholder="Write your post here..."
                 {...register('postContent', { required: 'This field is required' })}
@@ -68,9 +130,9 @@ function NewPostPage() {
                 sx={{
                   bgcolor: '#333',
                   color: '#fff',
+                  mb: 2,
                   textarea: { color: '#fff' },
                   input: { color: '#fff' },
-                  borderColor: '#444',
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       borderColor: '#444',
@@ -78,12 +140,45 @@ function NewPostPage() {
                   },
                 }}
               />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
-                <Button type="submit" variant="contained" sx={{ bgcolor: '#7F00FF' }}>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <Typography sx={{ color: '#fff', mb: 1 }}>Select Tags:</Typography>
+                <Select
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleTagAdd}
+                  sx={{
+                    bgcolor: '#333',
+                    color: '#fff',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#444',
+                      },
+                    },
+                  }}
+                >
+                  {availableTags.map(tag => (
+                    <MenuItem key={tag.id} value={tag.name}>{tag.name}</MenuItem>
+                  ))}
+                </Select>
+                <Box sx={{ mt: 1 }}>
+                  {tags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      label={tag}
+                      onDelete={() => handleTagRemove(tag)}
+                      sx={{ margin: '2px', bgcolor: '#7F00FF', color: '#fff' }}
+                    />
+                  ))}
+                </Box>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+                <Button type="submit" variant="contained" sx={{ bgcolor: '#7F00FF', mr: 2 }}>
                   POST &gt;
                 </Button>
                 <Button component={Link} to="/gpt" variant="contained" sx={{ bgcolor: '#7F00FF' }}>
-                  Go to GPT Page
+                  Chat GPT
                 </Button>
               </Box>
             </form>
