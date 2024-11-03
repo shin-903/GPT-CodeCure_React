@@ -223,33 +223,37 @@ export const gptResponse = async (userMessage) => {
 };
 
 
+// user.js
 // /postsエンドポイントにPOSTリクエストを送信する関数
-// export const createPost = async (data) => {
-//   try {
-//     const response = await apiClient.post('/posts', {
-//       post: {
-//         title: data.title,
-//         content: data.content
-//       }
-//     });
-//     console.log(response);
-//     if (response.status === 201) {
-//       return {
-//         message: response.data.message,
-//         post: response.data.post
-//       };
-//     }
-//   } catch (error) {
-//     if (error.response && error.response.status === 400) {
-//       return {
-//         error: error.response.data.error
-//       };
-//     } else {
-//       console.error("An unexpected error occurred:", error);
-//       return { error: "An unexpected error occurred" };
-//     }
-//   }
-// };
+export const createPost = async (data) => {
+  try {
+    const response = await apiClient.post('/posts', {
+      post: {
+        title: data.title,
+        content: data.content,
+        user_id: data.userId // user_idを追加
+      },
+      tag_ids: data.tagIds // タグのIDを送信
+    });
+    console.log(response);
+    if (response.status === 201) {
+      return {
+        message: response.data.message,
+        post: response.data.post
+      };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      return {
+        error: error.response.data.error
+      };
+    } else {
+      console.error("An unexpected error occurred:", error);
+      return { error: "An unexpected error occurred" };
+    }
+  }
+};
+
 
 
 
