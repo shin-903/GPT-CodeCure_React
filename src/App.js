@@ -5,27 +5,27 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import UserPage from "./pages/UserPage";
 import NewPostPage from "./pages/NewPostPage";
+import GptPage from './pages/GptPage';
 import UserSettingsPage from "./pages/UserSettingsPage";
 import PostPage from "./pages/PostPage";
-
 import { UserProvider } from './UserContext';
 
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <UserProvider><Routes>
+        <Route path="/" element={<UserProvider><Home /></UserProvider>} />
         <Route path="/user" element={<UserProvider><UserPage /></UserProvider>} />
         <Route path="/user/edit" element={<UserProvider><UserSettingsPage /></UserProvider>} />
         <Route path="/new/post" element={<UserProvider><NewPostPage /></UserProvider>} />
+        <Route path="/gpt" element={<UserProvider><GptPage /></UserProvider>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<UserProvider><SignIn /></UserProvider>} />
         <Route path="/post/:id" element={<UserProvider><PostPage /></UserProvider>} />
-      </Routes>
+      </Routes></UserProvider>
     </Router>
   );
 };
-
 export default App;
 
 // const App = () => {

@@ -200,6 +200,29 @@ export const getPosts = async () => {
     return { error: "An unexpected error occurred" };
   }
 };
+
+
+// /gpt_responseエンドポイントにPOSTリクエストを送信する関数
+export const gptResponse = async (userMessage) => {
+  try {
+    console.log(userMessage);
+    const response = await apiClient.post('/gpt_response', {
+      message: userMessage,
+    });
+
+    console.log(response);
+    if (response.status === 200) {
+      return {
+        response: response.data.response,
+      };
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
+  }
+};
+
+
 // /postsエンドポイントにPOSTリクエストを送信する関数
 // export const createPost = async (data) => {
 //   try {
