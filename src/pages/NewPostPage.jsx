@@ -4,11 +4,12 @@ import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typograp
 import { useNavigate, Link } from 'react-router-dom';
 import { createPost } from '../api/user'; // createPost関数をインポート
 import { useUserContext } from '../UserContext'; // コンテキストのフック
+import { marked } from 'marked'; // マークダウンをHTMLに変換するためのライブラリ
+import DOMPurify from 'dompurify'; // XSS対策のためのDOMPurifyをインポート
 
 function NewPostPage() {
-  const [gptResponseData, setGptResponse] = useState('');
   const [tags, setTags] = useState([]);
-  
+
   // react-hook-form の設定
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -50,7 +51,7 @@ function NewPostPage() {
   const onSubmitPost = async (data) => {
     const postData = {
       title: data.postTitle,
-      content: data.postContent,
+      content: DOMPurify.sanitize(marked(data.postContent)), // マークダウンをサニタイズ
       userId: userId,
       tagIds: tags.map(tag => availableTags.find(t => t.name === tag)?.id) // タグ名からIDを取得
     };
@@ -61,14 +62,12 @@ function NewPostPage() {
       console.error(response.error);
     } else {
       console.log('Post created successfully:', response.post);
-      setGptResponse(response.post); 
       navigate('/'); // ホームにリダイレクト
     }
   };
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff', display: 'flex', flexDirection: 'column' }}>
-      {/* Header Title */}
       <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
         <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt: 1, ml: 1 }}>
           GPT
@@ -78,7 +77,6 @@ function NewPostPage() {
         </Typography>
       </Box>
 
-      {/* AppBar with Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Tabs value={2} textColor="inherit" indicatorColor="primary">
@@ -91,7 +89,7 @@ function NewPostPage() {
       </AppBar>
 
       <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '100%', maxWidth: 600, mb: 5}}>
+        <Card sx={{ bgcolor: '#1c1c1c', p: 2, width: '100%', maxWidth: 600, mb: 5 }}>
           <CardContent>
             <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontSize: '1rem' }}>
               Create New Post
