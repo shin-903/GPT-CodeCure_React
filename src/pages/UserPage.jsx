@@ -31,6 +31,11 @@ function UserPage() {
     return new Intl.DateTimeFormat('ja-JP', options).format(date);
   };
 
+  // ログアウト処理
+  const logout = () => {
+    localStorage.removeItem('token'); // ローカルストレージからトークンを削除
+    navigate('/signin'); // サインインページにリダイレクト
+  };
 
   useEffect(() => {
     // 未認証の場合はサインインページにリダイレクト
@@ -80,14 +85,16 @@ function UserPage() {
 
           <Divider sx={{ bgcolor: '#444' }} />
 
-          <List> {/* Settingリンク　logout機能　未完成 */}
-            <ListItem button>
+          <List> {/* logout機能　未完成 */}
+            {/* Settingsリンク */}
+            <ListItem button component={Link} to="/user/edit">
               <ListItemIcon>
                 <SettingsIcon sx={{ color: '#fff' }} />
               </ListItemIcon>
               <ListItemText primary="Settings" sx={{ color: '#fff' }} />
             </ListItem>
-            <ListItem button>
+            {/* Logoutリンク */}
+            <ListItem button onClick={logout}>
               <ListItemIcon>
                 <LogoutIcon sx={{ color: '#fff' }} />
               </ListItemIcon>

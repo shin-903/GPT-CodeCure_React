@@ -8,20 +8,25 @@ const apiClient = axios.create({
   }
 });
 
-
 // リクエストのインターセプターを設定
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+apiClient.interceptors.request.use(
+  (config) => {
+    // ローカルストレージからトークンを取得
+    const token = localStorage.getItem('token');
 
+    // トークンが存在する場合、Authorizationヘッダーに追加
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // /signupエンドポイントにPOSTリクエストを送信する関数
 export const signup = async (data) => {
-  console.log(data);
   try {
     const response = await apiClient.post('/signup', {
       user: {
@@ -31,7 +36,6 @@ export const signup = async (data) => {
         password_confirmation: data.passwordConfirmation
       }
     });
-    console.log(response);
     if (response.status === 201) {
       return {
         message: response.data.message,
@@ -44,7 +48,6 @@ export const signup = async (data) => {
         error: error.response.data.error
       };
     } else {
-      console.error("An unexpected error occurred:", error);
       return { error: "An unexpected error occurred" };
     }
   }
@@ -52,13 +55,11 @@ export const signup = async (data) => {
 
 // /signinエンドポイントにPOSTリクエストを送信する関数
 export const signin = async (data) => {
-  console.log(data);
   try {
     const response = await apiClient.post('/login', {
       email: data.email,
       password: data.password
     });   
-    console.log(response);
     if (response.status === 200) {
       const token = response.data.token;
       const user = response.data.user;
@@ -74,17 +75,14 @@ export const signin = async (data) => {
         user: user, // レスポンスにユーザー情報を追加
         userId: user.id, // userIdを追加
         posts: posts // レスポンスにpostsを追加
-
       };
     }
   } catch (error) {
     if (error.response && error.response.status === 401) {
       return {
-        // error: error.response.data.error
-        error: error.response.data.error || "Unauthorized" 
+        error: error.response.data.error || "Unauthorized"
       };
     } else {
-      console.error("An unexpected error occurred:", error);
       return { error: "An unexpected error occurred" };
     }
   }
@@ -94,14 +92,12 @@ export const signin = async (data) => {
 // export const logout = async () => {
 //   try {
 //     const response = await apiClient.delete('/logout');
-//     console.log(response);
 //     if (response.status === 200) {
 //       return {
 //         message: response.data.message
 //       };
 //     }
 //   } catch (error) {
-//     console.error("An unexpected error occurred:", error);
 //     return { error: "An unexpected error occurred" };
 //   }
 // };
@@ -110,70 +106,62 @@ export const signin = async (data) => {
 export const getUser = async (userId) => {
   try {
     const response = await apiClient.get(`/users/${userId}`);
-    console.log(response);
     if (response.status === 200) {
       return {
         user: response.data.user,
         posts: response.data.posts // レスポンスにlogin関数で用いるpostsを追加
-
       };
     }
   } catch (error) {
-    console.error("An unexpected error occurred:", error);
     return { error: "An unexpected error occurred" };
   }
 };
 
-
 // /userエンドポイントにPATCHリクエストを送信する関数
-// export const updateUser = async (data) => {
-//   try {
-//     const response = await apiClient.patch('/user', {
-//       user: {
-//         name: data.name,
-//         email: data.email
-//       }
-//     });
-//     console.log(response);
-//     if (response.status === 200) {
-//       return {
-//         message: response.data.message,
-//         user: response.data.user
-//       };
-//     }
-//   } catch (error) {
-//     if (error.response && error.response.status === 400) {
-//       return {
-//         error: error.response.data.error
-//       };
-//     } else {
-//       console.error("An unexpected error occurred:", error);
-//       return { error: "An unexpected error occurred" };
-//     }
-//   }
-// };
+export const updateUser = async (userId, data) => {
+  try {
+    const response = await apiClient.patch(`/users/${userId}`, {
+      user: {
+        name: data.name,
+        email: data.email,
+        password: data.password
+      }
+    });
+    if (response.status === 200) {
+      return {
+        message: response.data.message,
+        user: response.data.user
+      };
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      return {
+        error: error.response.data.error
+      };
+    } else {
+      return { error: "An unexpected error occurred" };
+    }
+  }
+};
 
 // /userエンドポイントにDELETEリクエストを送信する関数
-// export const deleteUser = async () => {
-//   try {
-//     const response = await apiClient.delete('/user');
-//     console.log(response);
-//     if (response.status === 200) {
-//       return {
-//         message: response.data.message
-//       };
-//     }
-//   } catch (error) {
-//     console.error("An unexpected error occurred:", error);
-//     return { error: "An unexpected error occurred" };
-//   }
-// };
+export const deleteUser = async (userId) => {
+  try {
+    const response = await apiClient.delete(`/users/${userId}`);
+    if (response.status === 200) {
+      return {
+        message: response.data.message
+      };
+    }
+  } catch (error) {
+    return { error: "An unexpected error occurred" };
+  }
+};
 
 // /posts/:idエンドポイントにGETリクエストを送信する関数
 export const getPost = async (id) => {
   try {
     const response = await apiClient.get(`/posts/${id}`);
-    console.log(response);
     if (response.status === 200) {
       const post = response.data.post;
       const tags = response.data.tags;
@@ -183,7 +171,6 @@ export const getPost = async (id) => {
       };
     }
   } catch (error) {
-    console.error("An unexpected error occurred:", error);
     return { error: "An unexpected error occurred" };
   }
 };
@@ -196,34 +183,26 @@ export const getPosts = async () => {
       return { posts: response.data.posts };
     }
   } catch (error) {
-    console.error("An unexpected error occurred:", error);
     return { error: "An unexpected error occurred" };
   }
 };
 
-
 // /gpt_responseエンドポイントにPOSTリクエストを送信する関数
 export const gptResponse = async (userMessage) => {
   try {
-    console.log(userMessage);
     const response = await apiClient.post('/gpt_response', {
       message: userMessage,
     });
-
-    console.log(response);
     if (response.status === 200) {
       return {
         response: response.data.response,
       };
     }
   } catch (error) {
-    console.error("An unexpected error occurred:", error);
     return { error: "An unexpected error occurred" };
   }
 };
 
-
-// user.js
 // /postsエンドポイントにPOSTリクエストを送信する関数
 export const createPost = async (data) => {
   try {
@@ -235,7 +214,6 @@ export const createPost = async (data) => {
       },
       tag_ids: data.tagIds // タグのIDを送信
     });
-    console.log(response);
     if (response.status === 201) {
       return {
         message: response.data.message,
@@ -248,15 +226,10 @@ export const createPost = async (data) => {
         error: error.response.data.error
       };
     } else {
-      console.error("An unexpected error occurred:", error);
       return { error: "An unexpected error occurred" };
     }
   }
 };
-
-
-
-
 
 // /posts/:idエンドポイントにPATCHリクエストを送信する関数
 // export const updatePost = async (id, data) => {
@@ -267,7 +240,6 @@ export const createPost = async (data) => {
 //         content: data.content
 //       }
 //     });
-//     console.log(response);
 //     if (response.status === 200) {
 //       return {
 //         message: response.data.message,
@@ -280,7 +252,6 @@ export const createPost = async (data) => {
 //         error: error.response.data.error
 //       };
 //     } else {
-//       console.error("An unexpected error occurred:", error);
 //       return { error: "An unexpected error occurred" };
 //     }
 //   }
@@ -294,9 +265,6 @@ export const deletePost = async (id) => {
       return { message: response.data.message };
     }
   } catch (error) {
-    console.error("An unexpected error occurred:", error);
     return { error: "An unexpected error occurred" };
   }
 };
-
-
