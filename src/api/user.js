@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 // Axiosインスタンスを作成し、ベースURLを設定
+//ローカル環境の場合、これに変更 'http://localhost:3000'
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // APIのベースURL
+  baseURL: 'https://gpt-codecure-rails.onrender.com', // APIのベースURLをRenderのURLに変更
   headers: {
     'Content-Type': 'application/json'
   }
