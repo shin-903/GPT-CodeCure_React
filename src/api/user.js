@@ -287,18 +287,16 @@ export const createPost = async (data) => {
 // };
 
 // /posts/:idエンドポイントにDELETEリクエストを送信する関数
-// export const deletePost = async (id) => {
-//   try {
-//     const response = await apiClient.delete(`/posts/${id}`);
-//     console.log(response);
-//     if (response.status === 200) {
-//       return {
-//         message: response.data.message
-//       };
-//     }
-//   } catch (error) {
-//     console.error("An unexpected error occurred:", error);
-//     return { error: "An unexpected error occurred" };
-//   }
-// };
+export const deletePost = async (id) => {
+  try {
+    const response = await apiClient.delete(`/posts/${id}`);
+    if (response.status === 200) {
+      return { message: response.data.message };
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
+  }
+};
+
 

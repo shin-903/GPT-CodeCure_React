@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Tabs, Tab, Box, Container, Typography, Button, Card, CardContent, Chip } from '@mui/material';
-import { getPost } from '../api/user';
-import { useParams, Link } from 'react-router-dom';
+import { getPost, deletePost } from '../api/user'; // deletePostをインポート
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify'; // XSS対策のためのDOMPurifyをインポート
 import { marked } from 'marked'; // マークダウンをHTMLに変換するためのライブラリ
 
 const PostPage = () => {
   const { id } = useParams(); // URLパラメータからidを取得
+  const navigate = useNavigate(); // 削除後に別ページにリダイレクトするために使用
 
   const [post, setPost] = useState(null);
   const [tags, setTags] = useState([]);
@@ -40,6 +41,17 @@ const PostPage = () => {
 
     fetchPost();
   }, [id]);
+
+  const handleDelete = async () => {
+    const result = await deletePost(id);
+    if (result.error) {
+      setError(result.error);
+    } else {
+      console.log(result.message || 'Post deleted successfully');
+      alert(result.message || 'Post deleted successfully');
+      navigate('/'); // 削除後にホームページにリダイレクト
+    }
+  };
 
   if (error) return <div>{error}</div>;
   if (!post) return <div>Loading...</div>; // postがnullの場合にローディングメッセージを表示
@@ -96,8 +108,7 @@ const PostPage = () => {
         <Typography variant="body1" sx={{ color: '#fff', mb: 1 }}>
           Do you delete the Post?
         </Typography>
-        {/* <Button variant="outlined" color="error" onClick={handleDelete}> */}
-        <Button variant="outlined" color="error" >
+        <Button variant="outlined" color="error" onClick={handleDelete}>
           DELETE
         </Button>
       </Box>
