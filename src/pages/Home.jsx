@@ -66,17 +66,17 @@ const Home = () => {
       </AppBar>
 
       {/* Search Bar 　未完成　*/}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+      {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#333', borderRadius: '4px', padding: '0 8px' }}>
           <InputBase placeholder="Search tag" sx={{ color: '#fff', pl: 1 }} />
           <IconButton type="submit" sx={{ p: 1, color: '#fff' }}>
             <SearchIcon />
           </IconButton>
         </Box>
-      </Box>
+      </Box> */}
 
       {/* Post List */}
-      <Box sx={{ mt: 4, mb: 20 }}> {/* Boxで全体をラップし、上下のマージンを設定 */}
+      <Box sx={{ mt: 8, mb: 20 }}> {/* Boxで全体をラップし、上下のマージンを設定 */}
         <Container>
           {posts.length === 0 ? ( // 投稿がない場合のメッセージ
             <Typography variant="h6" align="center" sx={{ color: '#aaa', mt: 4 }}>

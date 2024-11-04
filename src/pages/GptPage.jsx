@@ -9,6 +9,7 @@ function GptPage() {
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false); // ローディング状態を管理
 
+
   const handleQuestionSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); // ローディング開始

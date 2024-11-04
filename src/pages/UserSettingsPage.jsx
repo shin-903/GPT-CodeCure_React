@@ -1,40 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography, Card } from '@mui/material';
+import { AppBar, Toolbar, Tabs, Tab, Box, Container, TextField, Button, Typography } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
-import { useUserContext } from '../UserContext'; // コンテキストのフック
-
+import { useUserContext } from '../UserContext';
+import { updateUser, deleteUser } from "../api/user";
 
 function UserSettingsPage() {
-  // react-hook-form の設定
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
-  // フォームの送信処理　未完成
-  const onSubmit = (data) => {
-    console.log('Form submitted:', data);
-  };
-
-  // アカウント削除処理  未完成
-  const handleDelete = () => {
-    console.log('Account deletion triggered');
-  };
-
   const navigate = useNavigate();
-  // 認証状態の管理
-  const { posts, user, userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態,user情報を取得
+  const { userId, isAuthenticated } = useUserContext();
 
   useEffect(() => {
-    // 未認証の場合はサインインページにリダイレクト
     if (!userId && !isAuthenticated) {
       navigate("/signin");
     }
   }, [userId, isAuthenticated, navigate]);
 
-  console.log(user);  
+  // ユーザー情報の更新処理
+  const onSubmit = async (data) => {
+    try {
+      const result = await updateUser(userId, data);
+      if (result.error) {
+        alert(result.error);
+      } else {
+        alert("ユーザー情報が更新されました。");
+        navigate("/user");
+      }
+    } catch (error) {
+      console.error("更新エラー:", error);
+      alert("更新に失敗しました。");
+    }
+  };
+
+  // アカウント削除処理
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("アカウントを本当に削除しますか？");
+    if (confirmDelete) {
+      try {
+        const result = await deleteUser(userId);
+        if (result.error) {
+          alert(result.error);
+        } else {
+          alert("アカウントが削除されました。");
+          navigate("/signin");
+        }
+      } catch (error) {
+        console.error("削除エラー:", error);
+        alert("削除に失敗しました。");
+      }
+    }
+  };
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff' }}>
-      
       {/* Header Title */}
       <Box sx={{ bgcolor: '#000', py: 2, pl: 2, display: 'flex', alignItems: 'center' }}>
         <Typography variant="h4" sx={{ color: '#fff', fontSize: '1.8rem', mr: 1, mt:1, ml:1 }}>
@@ -48,7 +66,7 @@ function UserSettingsPage() {
       {/* AppBar with Tabs */}
       <AppBar position="static" sx={{ bgcolor: '#000', borderBottom: '1px solid #444' }}>
         <Toolbar sx={{ justifyContent: 'center' }}>
-          <Tabs >
+          <Tabs>
             <Tab label="Home" component={Link} to="/" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="Gpt" component={Link} to="/gpt" sx={{ color: '#fff', mr: 8 }} />
             <Tab label="New" component={Link} to="/new/post" sx={{ color: '#fff', mr: 8 }} />
@@ -60,8 +78,6 @@ function UserSettingsPage() {
       <Container sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
         {/* 左側のユーザー編集フォーム */}
         <Container component="main" maxWidth="sm" sx={{ bgcolor: '#121212', padding: '2rem', borderRadius: '8px', border: '2px solid #7F00FF', mt: 15 }}>
-
-        {/* <Card sx={{ width: '500px', p: 3, border: '2px solid #7F00FF', borderRadius: '10px' }}> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
               fullWidth
@@ -72,7 +88,7 @@ function UserSettingsPage() {
               error={!!errors.name}
               helperText={errors.name?.message}
               sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-              />
+            />
             <TextField
               fullWidth
               label="Email"
@@ -83,10 +99,11 @@ function UserSettingsPage() {
               helperText={errors.email?.message}
               sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
               ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
-                WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
-                WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+                WebkitTextFillColor: '#fff',
+                WebkitBoxShadow: '0 0 0px 1000px #121212 inset',
                 transition: 'background-color 5000s ease-in-out 0s'
-              }}}            />
+              }}}
+            />
             <TextField
               fullWidth
               label="Password"
@@ -98,10 +115,11 @@ function UserSettingsPage() {
               helperText={errors.password?.message}
               sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }
               ,'&:hover fieldset': { borderColor: '#7F00FF' }, '& input:-webkit-autofill': {
-                WebkitTextFillColor: '#fff', // オートフィル時の文字色を白に設定
-                WebkitBoxShadow: '0 0 0px 1000px #121212 inset', // 背景色を暗めに設定
+                WebkitTextFillColor: '#fff',
+                WebkitBoxShadow: '0 0 0px 1000px #121212 inset',
                 transition: 'background-color 5000s ease-in-out 0s'
-              }}}            />
+              }}}
+            />
             <TextField
               fullWidth
               label="Password confirmation"
@@ -112,23 +130,22 @@ function UserSettingsPage() {
               error={!!errors.passwordConfirmation}
               helperText={errors.passwordConfirmation?.message}
               sx={{ input: { color: '#fff' }, '& .MuiInputBase-input': { color: '#fff' }, '& label': { color: '#fff' }, '& fieldset': { borderColor: '#7F00FF' }, '&:hover fieldset': { borderColor: '#7F00FF' } }}
-              />
+            />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, bgcolor: '#7F00FF', color: '#fff' }}>
               SAVE CHANGES
             </Button>
           </form>
-        {/* </Card> */}
         </Container>
 
         {/* 右側のアカウント削除ボタン */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 10, mt: 10 }}>
+        {/* <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 10, mt: 10 }}>
           <Typography variant="body1" sx={{ color: '#fff', mb: 2 }}>
             Do you delete the account?
           </Typography>
           <Button variant="outlined" color="error" onClick={handleDelete}>
             DELETE
           </Button>
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   );
