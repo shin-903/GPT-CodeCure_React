@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# GPT CodeCure
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GPT CodeCureは、エンジニアが開発中に発生するエラーや問題に対する解決策を簡単に共有できるSNSアプリケーションです。このプラットフォームを通じて、エンジニアはChatGPTから得た解決策を投稿し、他のエンジニアと情報をシェアすることで、効率的なトラブルシューティングをサポートします。
 
-## Available Scripts
+## コンセプト
 
-In the project directory, you can run:
+開発中に発生したエラーを解決する際、通常はWeb上で検索し、自力で記事を参照して対策を見つける必要がありますが、これには時間がかかる場合があります。GPT CodeCureは、以下の目的で設計されています。
 
-### `npm start`
+- ChatGPTから得た解決策を即座に投稿し、他のエンジニアにも役立つ情報として共有できる
+- 投稿数が増加することで、同じエラーに悩むエンジニアが素早く解決策を発見しやすくなる
+- エンジニア同士が知見を交換し、効率的に開発を進められるコミュニティの構築
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 主な機能
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **投稿機能**：ChatGPTの解決策に限らず、エンジニア自身が発見した解決方法や知見も自由に投稿し、コミュニティと共有できます。
+- **フィードの閲覧**：他のエンジニアが投稿したエラー解決策を簡単に参照でき、類似の問題に迅速に対処できます。
+- **ChatGPTとの連携**：アプリ内の入力フォームから直接ChatGPTに質問し、リアルタイムで解決策を取得できます。得られた解決策は、そのまま記事として投稿し、他のエンジニアと共有することが可能です。
 
-### `npm test`
+## 技術スタック
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **フロントエンド**：React  
+- **バックエンド**：Ruby on Rails
+- **データベース**：PostgreSQL  
+- **その他API**：OpenAI API 
+- **Docker**：Dockerを用いて開発環境を構築し、一貫性のある環境での開発を実現  
 
-### `npm run build`
+## セットアップ方法
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. リポジトリをクローンします。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```bash
+    git clone https://github.com/shin-903/GPT-CodeCure_React.git
+    git clone https://github.com/shin-903/GPT-CodeCure_Rails.git
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. 必要なパッケージをインストールします。
 
-### `npm run eject`
+    ```bash
+    # フロントエンド
+    cd GPT-CodeCure_React
+    npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    # バックエンド
+    cd ../GPT-CodeCure_Rails
+    bundle install
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Dockerを使ってアプリケーションを起動します。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    ```bash
+    docker-compose up
+    ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. ブラウザで`http://localhost:3000`にアクセスしてアプリケーションを確認します。
 
-## Learn More
+## GitHub リンク
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **フロントエンド**： [https://github.com/shin-903/GPT-CodeCure_React.git](https://github.com/shin-903/GPT-CodeCure_React.git)
+- **バックエンド**： [https://github.com/shin-903/GPT-CodeCure_Rails.git](https://github.com/shin-903/GPT-CodeCure_Rails.git)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## 今後の展望
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+今後は、検索機能や、役に立った記事をお気に入りとして保存する機能、記事の評価機能などを追加し、より多くのエンジニアが効率的に問題解決できる環境を目指して改善していく予定です。
