@@ -31,11 +31,11 @@ function GptPage() {
   const navigate = useNavigate();
   const { userId, isAuthenticated } = useUserContext(); // UserContextからuserIdと認証状態を取得
 
-  useEffect(() => {
-    if (!userId && !isAuthenticated) {
-      navigate("/signin");
-    }
-  }, [userId, isAuthenticated, navigate]);
+//   useEffect(() => {
+//     if (!userId && !isAuthenticated) {
+//       navigate("/signin");
+//     }
+//   }, [userId, isAuthenticated, navigate]);
 
   return (
     <Box sx={{ bgcolor: '#000', minHeight: '100vh', color: '#fff', display: 'flex', flexDirection: 'column' }}>
